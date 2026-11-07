@@ -1,0 +1,144 @@
+/* CSS controls how the HTML looks. Each rule is: selector { property: value; } */
+
+/* 1. Variables: define colors and fonts once, reuse them everywhere with var(--name). */
+:root {
+  --paper: #f4f2ed;   /* page background, warm off-white like the reference */
+  --ink: #1f1e1b;     /* main text */
+  --muted: #6a665e;   /* secondary text */
+  --rule: #d8d3c7;    /* thin divider lines */
+  --accent: #2c4a6e;  /* links and buttons: change this to make it yours */
+
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 2. Reset: make width calculations predictable and remove default page margin. */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;   /* 17px */
+  line-height: 1.6;
+}
+
+/* 3. Typography */
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(2.6rem, 6vw, 4rem); letter-spacing: -0.02em; }
+h2 { font-size: 1.9rem; margin-bottom: 1.5rem; }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1rem; max-width: 65ch; }   /* ch = width of a "0"; keeps lines readable */
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+
+/* Visible outline for keyboard users */
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* 4. Layout: every section is centered and no wider than 64rem. */
+.site-header, main, .site-footer {
+  width: min(64rem, 100% - 2.5rem);   /* 2.5rem of breathing room on small screens */
+  margin-inline: auto;
+}
+section { padding: 4rem 0; border-top: 1px solid var(--rule); }
+.hero { border-top: 0; }
+
+/* Skip link: hidden until focused */
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--ink); color: var(--paper); padding: .5rem 1rem; }
+
+/* 5. Header: brand on the left, links on the right (flexbox does the spacing). */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  padding: 1.25rem 0;
+}
+.brand { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a:hover { color: var(--ink); }
+
+/* 6. Hero: text on the left, portrait on the right (grid = two columns). */
+.hero {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  padding-top: 3rem;
+}
+.kicker { color: var(--muted); margin-bottom: .75rem; }
+.lead { font-size: 1.25rem; margin-top: 1.25rem; }
+
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--paper);
+  padding: .65rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  margin: 0 .5rem .5rem 0;
+}
+.button:hover { background: var(--ink); }
+.button-quiet { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.button-quiet:hover { background: var(--accent); color: var(--paper); }
+
+/* Facts list under the hero text */
+.facts { margin: 2rem 0 0; border-top: 1px solid var(--rule); }
+.facts div { display: grid; grid-template-columns: 7rem 1fr; padding: .6rem 0; border-bottom: 1px solid var(--rule); }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+/* Portrait figure and caption */
+.portrait { margin: 0; }
+.portrait-box {
+  aspect-ratio: 4 / 5;
+  background: #e6e2d8;
+  border: 1px solid var(--rule);
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+.portrait img { width: 100%; height: auto; display: block; }
+figcaption { margin-top: .5rem; font-size: .85rem; color: var(--muted); }
+
+/* 7. Experience: date column on the left, details on the right */
+.entry { display: grid; grid-template-columns: 11rem 1fr; gap: 1.5rem; padding: 1.5rem 0; border-top: 1px solid var(--rule); }
+.entry:first-of-type { border-top: 0; padding-top: 0; }
+.entry-meta { color: var(--muted); font-size: .95rem; margin: 0; }
+.org { color: var(--muted); margin: .25rem 0 .75rem; }
+.entry ul { margin: 0; padding-left: 1.2rem; max-width: 65ch; }
+.entry li { margin-bottom: .4rem; }
+
+/* 8. Projects */
+.section-note { color: var(--muted); }
+.project { padding: 1.5rem 0; border-top: 1px solid var(--rule); }
+.project h3 { margin-bottom: .5rem; }
+table { border-collapse: collapse; margin: 1rem 0; width: 100%; max-width: 40rem; }
+th, td { text-align: left; vertical-align: top; padding: .45rem 1rem .45rem 0; border-bottom: 1px solid var(--rule); }
+th { width: 6.5rem; font-weight: 500; color: var(--muted); }
+
+/* 9. Skills: three columns that stack on small screens automatically */
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 2rem; }
+.skills h3 { margin-bottom: .4rem; }
+.skills p { margin: 0; color: var(--muted); }
+
+/* 10. Contact and footer */
+.links { list-style: none; padding: 0; margin: 0; }
+.links li { margin-bottom: .4rem; }
+.site-footer { padding: 2rem 0 3rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .9rem; }
+
+/* 11. Responsive: below 700px wide, stack columns instead of side by side. */
+@media (max-width: 700px) {
+  .hero { grid-template-columns: 1fr; }
+  .portrait { max-width: 18rem; }
+  .entry { grid-template-columns: 1fr; gap: .5rem; }
+}
+
+/* Respect people who turn off animations in their system settings. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
