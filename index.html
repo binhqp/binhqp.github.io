@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- Every HTML file starts with the line above. It tells the browser "this is modern HTML". -->
+<html lang="en">
+<head>
+  <!-- <head> holds information ABOUT the page. Nothing in here is shown on the page itself. -->
+  <meta charset="utf-8">
+  <!-- Makes the page scale correctly on phones. Always include it. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- The text shown in the browser tab and in Google results. -->
+  <title>Your Name — Your Field</title>
+  <meta name="description" content="One sentence about who you are and what you do.">
+  <meta name="theme-color" content="#f4f2ed">
+
+  <!-- Connects this page to your stylesheet. The path is relative: same folder as index.html. -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- <body> holds everything visible on the page. -->
+
+  <!-- Lets keyboard users jump past the menu. It stays hidden until they press Tab. -->
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- <header> = the top bar. <nav> = a group of navigation links. -->
+  <header class="site-header">
+    <a class="brand" href="index.html">Your Name</a>
+    <nav aria-label="Main">
+      <!-- href="#experience" scrolls to the element with id="experience" further down. -->
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- <main> = the unique content of this page. Use it once per page. -->
+  <main id="main">
+
+    <!-- ===== HERO: the first thing visitors see ===== -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="kicker">Your field, for example Electrical Engineering</p>
+        <!-- <h1> is the main title. Use exactly one per page. -->
+        <h1>Your Name</h1>
+        <p class="lead">
+          Write two or three sentences here: what you study or do, what you focus on,
+          and one concrete thing you have built or achieved.
+        </p>
+        <p>
+          <a class="button" href="#projects">See projects</a>
+          <a class="button button-quiet" href="assets/your-resume.pdf">Résumé (PDF)</a>
+        </p>
+
+        <!-- A <dl> is a "description list": pairs of label (dt) and value (dd). -->
+        <dl class="facts">
+          <div><dt>Focus</dt><dd>Your main interest</dd></div>
+          <div><dt>Tools</dt><dd>Tool one, tool two, tool three</dd></div>
+          <div><dt>Location</dt><dd>City, Country</dd></div>
+        </dl>
+      </div>
+
+      <!-- Placeholder portrait. Later, replace this whole <div> with:
+           <img src="assets/portrait.jpg" alt="Portrait of Your Name"> -->
+      <figure class="portrait">
+        <div class="portrait-box" role="img" aria-label="Portrait placeholder">Your photo</div>
+        <figcaption>Fig. 1: A caption about the photo</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience">
+      <h2>Experience</h2>
+
+      <!-- <article> = a self-contained block. Copy this block for each job. -->
+      <article class="entry">
+        <p class="entry-meta">Month Year – Month Year<br>City, Country</p>
+        <div>
+          <h3>Job title</h3>
+          <p class="org">Organization or lab name</p>
+          <!-- <ul> = bullet list, <li> = one bullet. -->
+          <ul>
+            <li>Start with a verb and say what you did, with a number if you can.</li>
+            <li>Describe the result: what improved, shipped, or was learned.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="entry-meta">Month Year – Month Year<br>City, Country</p>
+        <div>
+          <h3>Second job title</h3>
+          <p class="org">Organization name</p>
+          <ul>
+            <li>Describe one achievement.</li>
+            <li>Describe another.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <p class="section-note">Each project links to its own page. You will build those pages later.</p>
+
+      <article class="project">
+        <h3>Project name</h3>
+        <p>Two sentences: what it is and what makes it interesting.</p>
+        <!-- A table is the right tool for rows of facts like this. -->
+        <table>
+          <tr><th scope="row">Tools</th><td>Tool one, tool two</td></tr>
+          <tr><th scope="row">My role</th><td>What you personally did</td></tr>
+          <tr><th scope="row">Result</th><td>The outcome, with a number</td></tr>
+        </table>
+        <a href="projects/project-one.html">Read the case study</a>
+      </article>
+
+      <article class="project">
+        <h3>Second project name</h3>
+        <p>Two sentences: what it is and what makes it interesting.</p>
+        <table>
+          <tr><th scope="row">Tools</th><td>Tool one, tool two</td></tr>
+          <tr><th scope="row">My role</th><td>What you personally did</td></tr>
+          <tr><th scope="row">Result</th><td>The outcome, with a number</td></tr>
+        </table>
+        <a href="projects/project-two.html">Read the case study</a>
+      </article>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills">
+        <div>
+          <h3>Category one</h3>
+          <p>Skill, skill, skill, skill</p>
+        </div>
+        <div>
+          <h3>Category two</h3>
+          <p>Skill, skill, skill, skill</p>
+        </div>
+        <div>
+          <h3>Category three</h3>
+          <p>Skill, skill, skill, skill</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Say what you are looking for, for example internships or collaborations.</p>
+      <ul class="links">
+        <li><a href="mailto:you@example.com">you@example.com</a></li>
+        <li><a href="https://www.linkedin.com/in/your-profile">LinkedIn</a></li>
+        <li><a href="https://github.com/your-username">GitHub</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- <footer> = the bottom strip of the page. -->
+  <footer class="site-footer">
+    <p>© 2026 Your Name</p>
+  </footer>
+
+</body>
+</html>
