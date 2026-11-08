@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2.4 GHz FMCW radar as a range detector — Your Name</title>
+  <meta name="description" content="Bachelor thesis: designing, building and characterizing a 2.4 GHz frequency-modulated continuous-wave radar from RF modules, custom horn antennas and a microcontroller.">
+  <meta name="theme-color" content="#f4f2ed">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="case">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">Your Name</a>
+    <nav aria-label="Main">
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#education">Education</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== Title and key facts ===== -->
+    <section class="hero">
+      <div class="hero-text">
+        <a class="back" href="../index.html#projects">Back to projects</a>
+        <h1>2.4 GHz FMCW radar as a range detector</h1>
+        <p class="lead">
+          For my bachelor thesis I built a working radar from off-the-shelf RF modules, home-made horn
+          antennas, custom circuit boards and a microcontroller, then measured how accurately it finds targets.
+        </p>
+        <dl class="facts">
+          <div><dt>Context</dt><dd>Bachelor thesis, Electrical Engineering and Information Technology, Vietnamese-German University, 2015</dd></div>
+          <div><dt>Principle</dt><dd>Frequency-modulated continuous wave, triangular sweep from 2.285 to 2.504 GHz</dd></div>
+          <div><dt>Hardware</dt><dd>Mini-Circuits RF modules, two pyramidal horn antennas, TI Tiva C LaunchPad with two custom boards</dd></div>
+          <div><dt>Software</dt><dd>Embedded C (Code Composer Studio), C# display program, Matlab for module characterization</dd></div>
+          <div><dt>Result</dt><dd>0.35 m range resolution, ranges within about 0.2 m up to 7 m</dd></div>
+        </dl>
+      </div>
+
+      <figure class="portrait">
+        <img src="../assets/radar-setup.jpg" alt="Two horn antennas in the foreground facing an orange dihedral reflector and a square plate on a tripod in an empty room">
+        <figcaption>Fig. 1: The radar’s horn antennas facing a dihedral reflector and a plate in the multi-target test</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== How it works ===== -->
+    <section id="concept">
+      <h2>How the radar works</h2>
+      <p>
+        An FMCW radar sends a signal whose frequency sweeps up and down. The echo from a target comes
+        back delayed, so it differs in frequency from what is being sent at that moment. Mixing the two
+        gives a low beat frequency that is proportional to the distance. A Fourier transform of the beat
+        signal then shows one peak per target.
+      </p>
+      <p>
+        The goal was a system that reaches roughly 20 m outdoors, handles several targets at once and
+        separates two targets 0.5 m apart, with a computer program that shows the results.
+      </p>
+      <figure>
+        <img src="../assets/radar-block.png" alt="Block diagram: voltage-controlled oscillator, amplifier, power splitter and transmit horn on top; receive horn, low-noise amplifier, mixer, IF amplifier and filter below; Tiva C with converters and FFT sending data to a PC">
+        <figcaption>Fig. 2: Block diagram. A DAC tunes the oscillator, and the Tiva C samples and analyzes the beat signal</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Design ===== -->
+    <section id="design">
+      <h2>Design</h2>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>Characterize every RF module</h3>
+            <p>Before integrating anything I measured the oscillator, splitter, low-noise amplifier, mixer, attenuator and cables with a network analyzer, a noise-figure analyzer and a signal generator, and plotted their performance curves in Matlab. This showed where each part behaves linearly and what it adds to the noise.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Choose the sweep</h3>
+            <p>The oscillator’s frequency is not perfectly linear in its tuning voltage. I used only the linear region, 0.5 V to 3.5 V at about 17.5 MHz per volt, which gives a sweep of roughly 218 MHz. That bandwidth sets the range resolution at about 0.35 m.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Build the antennas</h3>
+            <p>Two directional pyramidal horns, one to transmit and one to receive, keep the transmitter from leaking into the receiver. I designed them in Antenna Magus, built them and measured gain, reflection and radiation pattern in an ordinary room.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Generate the sweep and process the beat signal</h3>
+            <p>A 16-bit DAC with a buffer amplifier produces a 100 Hz triangular tuning voltage. After a 50× IF amplifier and an anti-aliasing filter, the Tiva C samples the beat signal at 10 kS/s, runs an FFT on 1024 samples and sends the ranges to a computer. I designed the DAC and the IF amplifier as plug-in boards that stack on the LaunchPad.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Show the results</h3>
+            <p>A C# program receives the ranges over a serial link and displays the targets and the spectrum, either automatically or for manual analysis.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="figure-row">
+        <figure>
+          <img src="../assets/radar-vco.png" alt="Oscillator tuning sensitivity in megahertz per volt against tuning voltage, flat between 0.5 and 3.5 volts">
+          <figcaption>Fig. 3a: Oscillator sensitivity against tuning voltage. The sweep uses the flat region</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/radar-horn.jpg" alt="Fabricated metal pyramidal horn antenna">
+          <figcaption>Fig. 3b: The fabricated pyramidal horn antenna</figcaption>
+        </figure>
+      </div>
+
+      <p>
+        The horn reaches about 9 dBi of gain across 2.4 to 2.5 GHz, and its reflection coefficient is
+        about −30 dB near 2.4 GHz. The main beam falls by 3 dB only 10° off the axis. These antenna
+        measurements were made in a normal room rather than an anechoic chamber, so they carry some tolerance.
+      </p>
+      <div class="figure-row">
+        <figure>
+          <img src="../assets/radar-horn-s11.png" alt="Reflection coefficient of the horn against frequency with a deep dip near 2.4 gigahertz">
+          <figcaption>Fig. 4a: Horn reflection coefficient</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/radar-horn-pattern.png" alt="Polar plot of the horn antenna radiation pattern with a narrow main lobe">
+          <figcaption>Fig. 4b: Horn radiation pattern</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== Results ===== -->
+    <section id="results">
+      <h2>Results</h2>
+      <p>
+        The radar first had to be calibrated, because the cables between the RF modules and the
+        microcontroller add a delay that makes every target look farther away. After subtracting the
+        mean offset, I tested it in a 12 m room with a 0.3 m square plate (radar cross section of about 6.5 m²).
+      </p>
+      <table>
+        <thead>
+          <tr><th>Test</th><td>Setup</td><td>Outcome</td></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Single target</th><td>Plate at 0.35 m to 7 m</td><td>Measured range within about 0.2 m</td></tr>
+          <tr><th scope="row">Off-grid targets</th><td>Plate at distances that are not multiples of the resolution</td><td>Errors up to about 0.15 m, because power spreads over neighboring FFT bins</td></tr>
+          <tr><th scope="row">Multiple targets</th><td>Plate, dihedral reflector and the room’s wall</td><td>Three separate peaks in the beat spectrum</td></tr>
+        </tbody>
+      </table>
+
+      <div class="figure-row">
+        <figure>
+          <img src="../assets/radar-multitarget.png" alt="Oscilloscope FFT of the beat signal with three distinct peaks">
+          <figcaption>Fig. 5a: Beat spectrum with three targets: plate, dihedral and wall</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/radar-gui.png" alt="Computer program showing the measured spectrum as red bars and a list of detected ranges">
+          <figcaption>Fig. 5b: The C# display program</figcaption>
+        </figure>
+      </div>
+
+      <p>
+        The 0.35 m resolution beats the 0.5 m goal. I only tested single-target ranges up to 7 m, so the
+        20 m goal is backed by a link-budget calculation (about 90 dB output signal-to-noise ratio for the
+        plate at 10 m), not by a measurement.
+      </p>
+    </section>
+
+    <!-- ===== Takeaways ===== -->
+    <section id="takeaways">
+      <h2>What I took away</h2>
+      <ul>
+        <li>Building a full system from RF front end to display program, and finding that the cables, the filter and the oscillator’s linearity matter as much as any single part.</li>
+        <li>Characterizing each module first made it possible to explain the performance of the whole system.</li>
+        <li>Better resolution needs a wider sweep, and better sensitivity needs more transmit power or a more linear chirp. Those are the next steps.</li>
+      </ul>
+      <p><a class="back" href="../index.html#projects">Back to projects</a></p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Your Name</p>
+  </footer>
+</body>
+</html>
