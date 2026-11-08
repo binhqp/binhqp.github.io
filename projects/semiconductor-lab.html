@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Corbino MESFET fabrication on GaAs — Your Name</title>
+  <meta name="description" content="Hands-on clean-room lab: fabricating Corbino MESFETs on gallium arsenide, measuring them, and tracing why most devices failed.">
+  <meta name="theme-color" content="#f4f2ed">
+  <!-- The page lives in the projects/ folder, so ".." means "go up one folder". -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="case">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">Your Name</a>
+    <nav aria-label="Main">
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#education">Education</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== Title and key facts ===== -->
+    <section class="hero">
+      <div class="hero-text">
+        <a class="back" href="../index.html#projects">Back to projects</a>
+        <h1>Corbino MESFET fabrication on GaAs</h1>
+        <p class="lead">
+          In a clean-room lab course at Ulm University, I fabricated transistors by hand on gallium
+          arsenide, from cleaving the wafer to measuring the finished devices, and then worked out
+          why most of them failed.
+        </p>
+        <dl class="facts">
+          <div><dt>Context</dt><dd>Lab course Semiconductor Technology, Institute of Functional Nanosystems, Ulm University</dd></div>
+          <div><dt>Year</dt><dd>2022</dd></div>
+          <div><dt>Device</dt><dd>Corbino MESFET on GaAs, four device sizes</dd></div>
+          <div><dt>Process</dt><dd>E-beam evaporation, photolithography, wet etching, lift-off, annealing</dd></div>
+          <div><dt>Measurement</dt><dd>Wafer probe station, Keithley SMU, curve fitting in Python</dd></div>
+        </dl>
+      </div>
+
+      <figure class="portrait">
+        <img src="../assets/lab-cleanroom.jpg" alt="Me in cleanroom gear inside the yellow-lit lithography room">
+        <figcaption>Fig. 1: In the lithography room of the Ulm University clean room, 6 October 2022</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Overview ===== -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>
+        A MESFET is a field-effect transistor whose gate is a metal-semiconductor (Schottky) contact.
+        The lab used a Corbino layout: the source is a small disk, the gate a ring around it, and the
+        drain a second ring around that. Every step was done manually, so each one had to be understood
+        rather than just run.
+      </p>
+      <p>
+        The goal was a working device on each participant’s quarter of a 2-inch GaAs wafer, plus a
+        measurement report: diode and transistor characteristics, and a fit of the diode parameters.
+      </p>
+    </section>
+
+    <!-- ===== Fabrication ===== -->
+    <section id="fabrication">
+      <h2>Fabrication</h2>
+      <!-- <ol> = ordered list. The CSS turns the items into numbered steps. -->
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>Prepare the sample</h3>
+            <p>Cleave the 2-inch wafer into quarters along its crystal planes, then strip the native oxide in a H₃PO₄ : H₂O₂ : H₂O etch (3 : 1 : 25) for 20 seconds.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Deposit aluminum</h3>
+            <p>Evaporate aluminum with an electron beam at about 10⁻⁷ mbar, with a spinning sample holder for an even layer and a quartz-crystal sensor tracking the thickness.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Pattern the resist</h3>
+            <p>Spin-coat AZ 5214 E positive resist (4000 rpm, 60 s, 1.5 µm), bake at 100 °C, expose through the Corbino mask for 14 seconds, and develop in 726 MIF.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Etch the aluminum</h3>
+            <p>Etch in phosphoric acid heated to about 150 °C for roughly three minutes. The slight sideways etching under the resist is what opens the gaps that separate gate from source and drain.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Deposit the contact metals</h3>
+            <p>Evaporate a four-layer stack of 70 nm germanium, 50 nm gold, 10 nm nickel and 50 nm gold for the source and drain contacts.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Lift off</h3>
+            <p>Dissolve the remaining resist in warm acetone with an ultrasonic bath, so that the metal on top of it flakes away and only the contacts in the gaps stay.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Anneal</h3>
+            <p>Heat to 400 °C in nitrogen (one hour up, two hours hold, one hour down). At this temperature germanium sits on arsenic sites and acts as a donor, which improves the source and drain contacts.</p>
+          </div>
+        </li>
+      </ol>
+
+      <figure>
+        <img src="../assets/lab-process.png" alt="Four-step cross-section diagram: etching aluminum under resist, second deposition, lift-off, finished source, gate and drain">
+        <figcaption>Fig. 2: Gap formation between source, gate and drain through aluminum under-etching, second deposition and lift-off</figcaption>
+      </figure>
+
+      <div class="figure-row">
+        <figure>
+          <img src="../assets/lab-liftoff-before.jpg" alt="Quarter wafer covered in gold before lift-off">
+          <figcaption>Fig. 3a: Before lift-off</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/lab-liftoff-after.jpg" alt="Quarter wafer with the Corbino pattern revealed after lift-off">
+          <figcaption>Fig. 3b: After lift-off</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== Measurement ===== -->
+    <section id="measurement">
+      <h2>Measurement and analysis</h2>
+      <p>
+        I measured DC characteristics on a wafer probe station, contacting each device with
+        microprobes and driving it with a Keithley source-measure unit controlled from KITE.
+        Two measurements were taken: the diode curve of the gate contact and the transistor output curves.
+      </p>
+
+      <h3>Transistor output curves</h3>
+      <p>
+        The curves show the expected depletion-mode behavior. Current rises, saturates, and drops as the
+        gate voltage steps negatively from 0 V to −2 V. At the same bias the smallest device carried
+        roughly 38 mA against about 5 mA for the largest, in line with the drain current depending
+        inversely on gate length.
+      </p>
+      <div class="figure-row">
+        <figure>
+          <img src="../assets/lab-fet-smallest.png" alt="Output characteristics of the smallest MESFET, up to about 38 milliamps">
+          <figcaption>Fig. 4a: Smallest device</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/lab-fet-largest.png" alt="Output characteristics of the largest MESFET, up to about 5 milliamps">
+          <figcaption>Fig. 4b: Largest device</figcaption>
+        </figure>
+      </div>
+
+      <h3>Fitting the diode</h3>
+      <p>
+        To extract the saturation current I₀, the ideality factor n and the series resistance R<sub>S</sub>,
+        I rearranged the diode equation so that voltage is a function of current and fitted its derivative
+        dV/dI, which isolates R<sub>S</sub> first and leaves two parameters to tune. The fit follows the
+        measurement closely over the whole range.
+      </p>
+      <figure>
+        <img src="../assets/lab-fit-log.png" alt="Measured and fitted diode current on a logarithmic axis, closely overlapping">
+        <figcaption>Fig. 5: Measured diode curve and fit, semi-logarithmic scale</figcaption>
+      </figure>
+
+      <table>
+        <tr><th scope="row">Parameter</th><td>Largest device</td><td>Smallest device</td></tr>
+        <tr><th scope="row">n</th><td>1.3</td><td>1.21</td></tr>
+        <tr><th scope="row">R<sub>S</sub></th><td>4 Ω</td><td>0.2 Ω</td></tr>
+        <tr><th scope="row">I₀</th><td>23.5 nA</td><td>21 nA</td></tr>
+      </table>
+    </section>
+
+    <!-- ===== What went wrong ===== -->
+    <section id="failure-analysis">
+      <h2>Why most devices failed</h2>
+      <p>
+        Only one of the four quarter wafers produced working transistors, so the output curves above come
+        from that sample, which all four participants shared. On the others, many devices behaved like
+        plain resistors instead of diodes, and none behaved as transistors.
+      </p>
+      <p>
+        The likely cause was an electrical short between the gate and the source and drain. The gap that
+        separates them depends on how far the aluminum is over-etched and on how long the resist is
+        developed, since long development deepens the undercut beneath the resist. Both steps were hard
+        to control by hand. Atomic force microscope images backed this up: the working sample showed a
+        clean gap of about 1.8 µm, while the others had touching contacts or gaps below 0.5 µm.
+      </p>
+      <figure>
+        <img src="../assets/lab-afm.jpg" alt="Microscope image of the gap between two aluminum regions, measured at 1.79 micrometers">
+        <figcaption>Fig. 6: Gap between inner island and gate ring on the working sample, about 1.8 µm</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Takeaways ===== -->
+    <section id="takeaways">
+      <h2>What I took away</h2>
+      <ul>
+        <li>A small deviation in one step can cost a whole batch of devices, so timing and process control matter more than any single clever step.</li>
+        <li>Hands-on experience with clean-room processing: wet etching, spin-coating, contact lithography, evaporation, lift-off and annealing.</li>
+        <li>Characterizing devices end to end, from probing to fitting a physical model in Python and tying a failure back to the physical cause.</li>
+      </ul>
+      <p><a class="back" href="../index.html#projects">Back to projects</a></p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Your Name</p>
+  </footer>
+</body>
+</html>
