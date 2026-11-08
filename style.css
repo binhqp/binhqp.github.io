@@ -168,3 +168,6 @@ main figure img { width: 100%; height: auto; display: block; border: 1px solid v
 /* Case-study sections have a little less vertical padding than the home page */
 .case section { padding: 3rem 0; }
 .case h2 { margin-bottom: 1rem; }
+
+/* Table header row (used for the requirements-vs-results table) */
+thead th { width: auto; color: var(--muted); font-weight: 500; }
