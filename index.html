@@ -100,7 +100,6 @@
           </ul>
         </div>
       </article>
-    </section>
 
       <article class="entry">
         <p class="entry-meta">Aug 2019 – Oct 2022<br>Mainz, Germany</p>
@@ -129,6 +128,7 @@
           </ul>
         </div>
       </article>
+    </section>
 
 
     <!-- ===== EDUCATION ===== -->
@@ -179,15 +179,15 @@
     <!-- ===== PROJECTS ===== -->
     <section id="projects">
       <h2>Projects</h2>
-      <p class="section-note">Each project links to its own page. You will build those pages later.</p>
+      <p class="section-note">Selected work from coursework and my bachelor thesis. Each project links to a short case study.</p>
 
       <article class="project">
         <h3>Corbino MESFET fabrication on GaAs</h3>
-        <p>Clean-room lab course in which I fabricated transistors by hand on gallium arsenide and characterized them, then traced the failures back to the process.</p>
+        <p>Hand-processed depletion-mode MESFETs on GaAs in a university clean room, characterized them, and traced the low yield to a gate-spacing defect in a self-aligned process.</p>
         <!-- A table is the right tool for rows of facts like this. -->
         <table>
-          <tr><th scope="row">Tools</th><td>E-beam evaporation, photolithography, wet etching, Python</td></tr>
-          <tr><th scope="row">Tasks</th><td>Fabricated the devices, measured diode and transistor curves, fitted diode parameters, failure analysis</td></tr>
+          <tr><th scope="row">Tools</th><td>E-beam evaporation, contact lithography, wet etching, lift-off, probe station, Python</td></tr>
+          <tr><th scope="row">Tasks</th><td>Device fabrication, DC characterization, diode-parameter extraction, failure analysis</td></tr>
           <!--tr><th scope="row">Result</th><td>1 of 4 wafers gave working transistors; gap of 1.8 µm vs under 0.5 µm explained the failures</td></tr-->
         </table>
         <a href="projects/semiconductor-lab.html">Read the case study</a>
@@ -195,22 +195,22 @@
 
       <article class="project">
         <h3>2.45 GHz low-noise amplifier on FR4</h3>
-        <p>Designed a low-noise amplifier for the 2.4 GHz band from biasing to a manufactured, measured circuit board, and investigated unexplained spurious tones.</p>
+        <p>Single-stage SiGe LNA for the 2.4 GHz ISM band, taken from bias-point selection through EM co-simulation to a measured FR4 board.</p>
         <table>
           <tr><th scope="row">Tools</th><td>Keysight ADS, KiCad</td></tr>
-          <tr><th scope="row">Tasks</th><td>Biasing, stabilization, matching, layout, simulation and measurement</td></tr>
-          <tr><th scope="row">Result</th><td>Gain above 12 dB over 700 MHz; IP1dB of −15 dBm</td></tr>
+          <tr><th scope="row">Tasks</th><td>Biasing, stabilization, noise and gain matching, layout, EM co-simulation, measurement</td></tr>
+          <tr><th scope="row">Result</th><td>S21 above 12 dB over 700 MHz; IP1dB of −15 dBm</td></tr>
         </table>
         <a href="projects/lna-2p45ghz.html">Read the case study</a>
       </article>
 
       <article class="project">
         <h3>2.4 GHz FMCW radar as a range detector</h3>
-        <p>Bachelor thesis in which I built a working frequency-modulated radar from RF modules, home-made horn antennas and a microcontroller, and measured how accurately it finds targets.</p>
+        <p>Bachelor thesis: a complete FMCW radar built from connectorized RF modules, self-designed horn antennas and a microcontroller baseband, characterized for range resolution and accuracy.</p>
         <table>
-          <tr><th scope="row">Tools</th><td>comercial RF modules, Antenna Magus, TI Tiva C, Matlab, C and C#</td></tr>
-          <tr><th scope="row">My role</th><td>Characterized the modules, built the antennas and boards, wrote the firmware and display program</td></tr>
-          <tr><th scope="row">Result</th><td>0.35 m range resolution; ranges within about 0.2 m up to 7 m</td></tr>
+          <tr><th scope="row">Tools</th><td>Mini-Circuits RF modules, Antenna Magus, TI Tiva C, MATLAB, C, C#</td></tr>
+          <tr><th scope="row">Tasks</th><td>Module characterization, antenna and PCB design, firmware, display software</td></tr>
+          <tr><th scope="row">Result</th><td>0.35 m range resolution; range error within about 0.2 m up to 7 m</td></tr>
         </table>
         <a href="projects/fmcw-radar.html">Read the case study</a>
       </article>

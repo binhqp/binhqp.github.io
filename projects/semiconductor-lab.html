@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Corbino MESFET fabrication on GaAs — Binh Pham</title>
-  <meta name="description" content="Hands-on clean-room lab: fabricating Corbino MESFETs on gallium arsenide, measuring them, and tracing why most devices failed.">
+  <meta name="description" content="Clean-room fabrication of depletion-mode Corbino MESFETs on GaAs with a self-aligned single-mask process, DC characterization, diode-parameter extraction and root-cause analysis of the device yield.">
   <meta name="theme-color" content="#f4f2ed">
   <!-- The page lives in the projects/ folder, so ".." means "go up one folder". -->
   <link rel="stylesheet" href="../style.css">
@@ -31,124 +31,101 @@
         <a class="back" href="../index.html#projects">Back to projects</a>
         <h1>Corbino MESFET fabrication on GaAs</h1>
         <p class="lead">
-          In a clean-room lab course at Ulm University, I fabricated transistors by hand on gallium
-          arsenide, from cleaving the wafer to measuring the finished devices, and then worked out
-          why most of them failed.
+          I processed depletion-mode MESFETs on GaAs by hand in a university clean room, characterized
+          them on a probe station, and traced the low device yield to a single poorly controlled step.
         </p>
         <dl class="facts">
-          <div><dt>Context</dt><dd>Lab course Semiconductor Technology, Institute of Functional Nanosystems, Ulm University</dd></div>
-          <div><dt>Year</dt><dd>2022</dd></div>
-          <div><dt>Device</dt><dd>Corbino MESFET on GaAs, four device sizes</dd></div>
+          <div><dt>Context</dt><dd>Lab course Semiconductor Technology, Institute of Functional Nanosystems, Ulm University, 2022</dd></div>
+          <div><dt>Device</dt><dd>Depletion-mode Corbino MESFET, 50 nm n-GaAs channel, four gate geometries</dd></div>
+          <div><dt>Process</dt><dd>E-beam evaporation, contact lithography, wet etching, lift-off, Ge/Au/Ni/Au ohmic contacts, alloying</dd></div>
+          <div><dt>Testing</dt><dd>Probe station with Keithley SMU, SEM inspection, diode-parameter extraction in Python</dd></div>
           <div><dt>Facility</dt><dd>Ulm University clean room, ISO 4 working area</dd></div>
-          <div><dt>Process</dt><dd>E-beam evaporation, photolithography, wet etching, lift-off, annealing</dd></div>
-          <div><dt>Measurement</dt><dd>Wafer probe station, Keithley SMU, curve fitting in Python</dd></div>
         </dl>
       </div>
 
       <figure class="portrait">
-        <img src="../assets/lab-cleanroom.jpg" alt="Me in cleanroom gear inside the yellow-lit lithography room">
-        <figcaption>Fig. 1: In the lithography room of the Ulm University clean room, 6 October 2022</figcaption>
+        <img src="../assets/lab-cleanroom.jpg" alt="Me in clean-room gear inside the yellow-lit lithography room">
+        <figcaption>Fig. 1: In the lithography room of the Ulm University clean room, October 2022</figcaption>
       </figure>
     </section>
 
-    <!-- ===== Overview ===== -->
+    <!-- ===== Device and process concept ===== -->
     <section id="overview">
-      <h2>Overview</h2>
+      <h2>Device and process concept</h2>
       <p>
-        A MESFET is a field-effect transistor whose gate is a metal-semiconductor (Schottky) contact.
-        The lab used a Corbino layout: the source is a small disk, the gate a ring around it, and the
-        drain a second ring around that. Every step was done manually, so each one had to be understood
-        rather than just run.
+        A MESFET controls its channel with a Schottky gate instead of an insulated one. In the Corbino
+        layout the source is a central disk, the gate a ring around it and the drain an outer ring, so the
+        channel is fully enclosed by the electrodes. The wafers carried a 50 nm Si-doped n-GaAs channel
+        (about 10<sup>17</sup> cm<sup>−3</sup>) grown by molecular beam epitaxy and dimensioned for a moderate
+        pinch-off voltage, so the transistors operate in depletion mode.
       </p>
       <p>
-        The goal was a working device on each participant’s quarter of a 2-inch GaAs wafer, plus a
-        measurement report: diode and transistor characteristics, and a fit of the diode parameters.
+        The process needs only one lithography step. The resist pattern that masks the aluminum gate
+        during etching also serves as the lift-off mask for the ohmic metal, so source and drain align
+        themselves to the gate. The gap between them is set by how far the aluminum is under-etched
+        beneath the resist, and that turned out to decide the yield.
       </p>
-      <p>
-        The wafers arrived with the channel already grown by molecular beam epitaxy: a 50 nm
-        silicon-doped n-type GaAs layer (about 10<sup>17</sup> cm<sup>−3</sup>), thin enough that the
-        channel pinches off at a moderate gate voltage. The devices are depletion-mode transistors,
-        which conduct at zero gate voltage and are switched off by a negative one.
-      </p>
-    </section>
-
-    <!-- ===== Setting and safety ===== -->
-    <section id="setting">
-      <h2>Setting and safety</h2>
-      <p>
-        The course took place in the Ulm University clean room, built in the early 1990s and opened in 1993.
-        Its working area is kept at ISO 4 air cleanliness with a constant downward airflow, and the
-        lithography room uses yellow light so the photoresist is not exposed. Everyone worked in
-        overalls, hair covers and gloves, always with a supervisor present.
-      </p>
-      <p>
-        Gallium arsenide is classed as a carcinogen, so pieces and dust stayed on the work surface or in
-        closed containers and went into dedicated waste. Acids and solvents were handled on ventilated
-        wet benches with a face shield and gloves, and every beaker was labelled with its contents.
-      </p>
+      <figure>
+        <img src="../assets/lab-process.png" alt="Four-step cross-section: aluminum etched under the resist, ohmic metal deposited over the resist, lift-off, finished source, gate and drain">
+        <figcaption>Fig. 2: Self-aligned flow. The resist masks the aluminum etch, then the ohmic lift-off, and the under-etch sets the gate gap</figcaption>
+      </figure>
     </section>
 
     <!-- ===== Fabrication ===== -->
     <section id="fabrication">
       <h2>Fabrication</h2>
+      <p>
+        Every step ran by hand in the Ulm University clean room, which has an ISO 4 working area and
+        yellow-light lithography. GaAs, which is classed as a carcinogen, and the acids and solvents were
+        handled on ventilated wet benches under the facility’s safety rules.
+      </p>
       <!-- <ol> = ordered list. The CSS turns the items into numbered steps. -->
       <ol class="steps">
         <li>
           <div>
-            <h3>Prepare the sample</h3>
-            <p>Cleave the 2-inch wafer into quarters along its crystal planes, then strip the native oxide in a H₃PO₄ : H₂O₂ : H₂O etch (3 : 1 : 25) for 20 seconds.</p>
+            <h3>Sample preparation</h3>
+            <p>Cleaved a 2-inch wafer into quarters along its cleavage planes and removed the surface oxide in H₃PO₄ : H₂O₂ : H₂O (3 : 1 : 25) for 20 s.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Deposit aluminum</h3>
-            <p>Evaporate aluminum with an electron beam at about 10⁻⁷ mbar, with a spinning sample holder for an even layer and a quartz-crystal sensor tracking the thickness.</p>
+            <h3>Gate metal</h3>
+            <p>Deposited aluminum by electron-beam evaporation at about 10⁻⁷ mbar on a rotating holder, with a quartz-crystal monitor controlling the thickness.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Pattern the resist</h3>
-            <p>Spin-coat AZ 5214 E positive resist (4000 rpm, 60 s, 1.5 µm), bake at 100 °C, expose through the Corbino mask for 14 seconds, and develop in 726 MIF.</p>
+            <h3>Lithography</h3>
+            <p>Spun AZ 5214 E positive resist at 4000 rpm for 60 s (1.5 µm), soft-baked at 100 °C, contact-exposed for 14 s and developed in AZ 726 MIF, with an extra 20 s after inspection showed under-development.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Etch the aluminum</h3>
-            <p>Etch in phosphoric acid heated to about 150 °C for roughly three minutes. The slight sideways etching under the resist is what opens the gaps that separate gate from source and drain.</p>
+            <h3>Gate etch</h3>
+            <p>Etched the exposed aluminum in phosphoric acid at about 150 °C for roughly 3 min. The isotropic under-etch beneath the resist opens the gap between gate and ohmic contacts.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Deposit the contact metals</h3>
-            <p>Evaporate a four-layer stack of 70 nm germanium, 50 nm gold, 10 nm nickel and 50 nm gold for the source and drain contacts.</p>
+            <h3>Ohmic metallization and lift-off</h3>
+            <p>Evaporated Ge/Au/Ni/Au (70/50/10/50 nm) over the same resist pattern, then lifted it off in warm acetone with ultrasonic agitation, leaving the ohmic metal only where the aluminum had been removed.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Lift off</h3>
-            <p>Dissolve the remaining resist in warm acetone with an ultrasonic bath, so that the metal on top of it flakes away and only the contacts in the gaps stay.</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <h3>Anneal</h3>
-            <p>Heat to 400 °C in nitrogen (one hour up, two hours hold, one hour down). At this temperature germanium sits on arsenic sites and acts as a donor, which improves the source and drain contacts. Arsenic starts to gas out of GaAs at around 350 °C, which is why this step runs in a closed, ventilated setup.</p>
+            <h3>Contact alloying</h3>
+            <p>Annealed at 400 °C in nitrogen (1 h ramp, 2 h dwell, 1 h cool-down). Gallium diffuses out into the gold, and germanium fills the vacated gallium sites as a donor, forming the n⁺ region beneath the contacts. The anneal runs in a sealed chamber because GaAs releases arsenic above about 350 °C.</p>
           </div>
         </li>
       </ol>
 
-      <figure>
-        <img src="../assets/lab-process.png" alt="Four-step cross-section diagram: etching aluminum under resist, second deposition, lift-off, finished source, gate and drain">
-        <figcaption>Fig. 2: Gap formation between source, gate and drain through aluminum under-etching, second deposition and lift-off</figcaption>
-      </figure>
-
       <div class="figure-row">
         <figure>
-          <img src="../assets/lab-liftoff-before.jpg" alt="Quarter wafer covered in gold before lift-off">
+          <img src="../assets/lab-liftoff-before.jpg" alt="Quarter wafer fully covered in gold before lift-off">
           <figcaption>Fig. 3a: Before lift-off</figcaption>
         </figure>
         <figure>
-          <img src="../assets/lab-liftoff-after.jpg" alt="Quarter wafer with the Corbino pattern revealed after lift-off">
+          <img src="../assets/lab-liftoff-after.jpg" alt="Quarter wafer with the Corbino device array revealed after lift-off">
           <figcaption>Fig. 3b: After lift-off</figcaption>
         </figure>
       </div>
@@ -156,80 +133,83 @@
 
     <!-- ===== Measurement ===== -->
     <section id="measurement">
-      <h2>Measurement and analysis</h2>
+      <h2>Characterization</h2>
       <p>
-        I measured DC characteristics on a wafer probe station, contacting each device with
-        microprobes and driving it with a Keithley source-measure unit controlled from KITE.
-        Two measurements were taken: the diode curve of the gate contact and the transistor output curves.
+        I measured the devices at DC on a manual probe station with Cascade DFP 310 probes and a Keithley
+        source-measure unit controlled from KITE, recording the gate-diode characteristic and the transistor
+        output characteristics.
       </p>
 
-      <h3>Transistor output curves</h3>
+      <h3>Output characteristics</h3>
       <p>
-        The curves show the expected depletion-mode behavior. Current rises, saturates, and drops as the
-        gate voltage steps negatively from 0 V to −2 V. At the same bias the smallest device carried
-        roughly 38 mA against about 5 mA for the largest, in line with the drain current depending
-        inversely on gate length.
+        With V<sub>GS</sub> stepped from 0 V to −2 V in 0.5 V steps, both geometries show clean depletion-mode
+        behavior, with a linear region, saturation beyond V<sub>DS</sub> ≈ 2 V and drain current falling as the gate
+        approaches pinch-off. At equal bias the smallest device delivers about 38 mA and the largest about
+        5 mA, consistent with I<sub>D</sub> scaling inversely with gate length.
       </p>
       <div class="figure-row">
         <figure>
           <img src="../assets/lab-fet-smallest.png" alt="Output characteristics of the smallest MESFET, up to about 38 milliamps">
-          <figcaption>Fig. 4a: Smallest device</figcaption>
+          <figcaption>Fig. 4a: Smallest geometry</figcaption>
         </figure>
         <figure>
           <img src="../assets/lab-fet-largest.png" alt="Output characteristics of the largest MESFET, up to about 5 milliamps">
-          <figcaption>Fig. 4b: Largest device</figcaption>
+          <figcaption>Fig. 4b: Largest geometry</figcaption>
         </figure>
       </div>
 
-      <h3>Fitting the diode</h3>
+      <h3>Diode-parameter extraction</h3>
       <p>
-        To extract the saturation current I₀, the ideality factor n and the series resistance R<sub>S</sub>,
-        I rearranged the diode equation so that voltage is a function of current and fitted its derivative
-        dV/dI, which isolates R<sub>S</sub> first and leaves two parameters to tune. The fit follows the
-        measurement closely over the whole range.
+        The series resistance makes the Schottky diode equation implicit in I, so I solved it for V(I) and fitted
+        the differential resistance dV/dI = R<sub>S</sub> + nV<sub>T</sub>/(I + I₀). R<sub>S</sub> appears as the
+        high-current asymptote and can be fixed first, which leaves only n and I₀ to fit in the exponential
+        region. The resulting model tracks the measurement over the full range on both linear and logarithmic scales.
       </p>
       <figure>
         <img src="../assets/lab-fit-log.png" alt="Measured and fitted diode current on a logarithmic axis, closely overlapping">
-        <figcaption>Fig. 5: Measured diode curve and fit, semi-logarithmic scale</figcaption>
+        <figcaption>Fig. 5: Measured gate-diode characteristic and fitted model, semi-logarithmic scale</figcaption>
       </figure>
 
       <table>
-        <tr><th scope="row">Parameter</th><td>Largest device</td><td>Smallest device</td></tr>
-        <tr><th scope="row">n</th><td>1.3</td><td>1.21</td></tr>
-        <tr><th scope="row">R<sub>S</sub></th><td>4 Ω</td><td>0.2 Ω</td></tr>
-        <tr><th scope="row">I₀</th><td>23.5 nA</td><td>21 nA</td></tr>
+        <thead>
+          <tr><th>Parameter</th><td>Largest device</td><td>Smallest device</td></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Ideality factor n</th><td>1.3</td><td>1.21</td></tr>
+          <tr><th scope="row">Series resistance R<sub>S</sub></th><td>4 Ω</td><td>0.2 Ω</td></tr>
+          <tr><th scope="row">Saturation current I₀</th><td>23.5 nA</td><td>21 nA</td></tr>
+        </tbody>
       </table>
     </section>
 
-    <!-- ===== What went wrong ===== -->
+    <!-- ===== Failure analysis ===== -->
     <section id="failure-analysis">
-      <h2>Why most devices failed</h2>
+      <h2>Yield and root cause</h2>
       <p>
-        Only one of the four quarter wafers produced working transistors, so the output curves above come
-        from that sample, which all four participants shared. On the others, many devices behaved like
-        plain resistors instead of diodes, and none behaved as transistors.
+        Only one of the four quarters yielded functional transistors, and the output curves above come from
+        that sample, which all participants shared. On the other three, most gate contacts behaved ohmically
+        rather than rectifying, and no device worked as a transistor. That is the signature of a short between
+        the gate and the ohmic contacts.
       </p>
       <p>
-        The likely cause was an electrical short between the gate and the source and drain. The gap that
-        separates them depends on how far the aluminum is over-etched and on how long the resist is
-        developed, since long development deepens the undercut beneath the resist. Both steps were hard
-        to control by hand. Atomic force microscope images backed this up: the working sample showed a
-        clean gap of about 1.8 µm, while the others had touching contacts or gaps below 0.5 µm.
+        In this process the gap depends only on the aluminum under-etch, and a longer development also
+        deepens the resist undercut. Both steps were timed by hand, so both directly controlled yield.
+        SEM inspection confirmed the picture: the functional quarter shows a clean gap of about 1.8 µm
+        between gate and source, while the others show touching metal or gaps below 0.5 µm.
       </p>
       <figure>
-        <img src="../assets/lab-afm.jpg" alt="Microscope image of the gap between two aluminum regions, measured at 1.79 micrometers">
-        <figcaption>Fig. 6: Gap between inner island and gate ring on the working sample, about 1.8 µm</figcaption>
+        <img src="../assets/lab-afm.jpg" alt="SEM image of the gap between the inner contact and the aluminum gate ring, measured at 1.79 micrometers">
+        <figcaption>Fig. 6: SEM image of the 1.8 µm gap between source island and gate ring on the functional quarter</figcaption>
       </figure>
     </section>
 
     <!-- ===== Takeaways ===== -->
     <section id="takeaways">
-      <h2>What I took away</h2>
+      <h2>Takeaways</h2>
       <ul>
-        <li>A small deviation in one step can cost a whole batch of devices, so timing and process control matter more than any single clever step.</li>
-        <li>Hands-on experience with clean-room processing: wet etching, spin-coating, contact lithography, evaporation, lift-off and annealing.</li>
-        <li>Characterizing devices end to end, from probing to fitting a physical model in Python and tying a failure back to the physical cause.</li>
-        <li>Working safely with hazardous materials such as GaAs, acids and solvents under strict clean-room rules.</li>
+        <li>In a self-aligned process, one hand-timed step can decide the yield of the whole batch.</li>
+        <li>The complete flow from bare wafer to characterized device: evaporation, lithography, wet etching, lift-off and contact alloying, under clean-room and GaAs safety rules.</li>
+        <li>Root-cause analysis that links an electrical symptom to a geometric defect and confirms it by imaging.</li>
       </ul>
       <p><a class="back" href="../index.html#projects">Back to projects</a></p>
     </section>

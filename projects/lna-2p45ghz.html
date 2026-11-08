@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>2.45 GHz low-noise amplifier on FR4 — Binh Pham</title>
-  <meta name="description" content="Design, simulation, layout, fabrication and measurement of a 2.45 GHz low-noise amplifier on an FR4 circuit board using ADS and KiCad.">
+  <meta name="description" content="Single-stage 2.45 GHz SiGe low-noise amplifier on FR4: bias-point selection, stabilization, noise and gain matching, KiCad layout, ADS EM co-simulation and measurement.">
   <meta name="theme-color" content="#f4f2ed">
   <link rel="stylesheet" href="../style.css">
 </head>
@@ -30,42 +30,41 @@
         <a class="back" href="../index.html#projects">Back to projects</a>
         <h1>2.45 GHz low-noise amplifier on FR4</h1>
         <p class="lead">
-          I took a low-noise amplifier for the 2.4 GHz band from transistor biasing through
-          electromagnetic simulation and PCB layout to a manufactured, measured board.
+          I designed a single-stage SiGe low-noise amplifier for the 2.4 GHz ISM band and took it from
+          bias-point selection through EM co-simulation to a measured board.
         </p>
         <dl class="facts">
           <div><dt>Context</dt><dd>Project High-Frequency Amplifier Design, Ulm University, summer semester 2022</dd></div>
-          <div><dt>Transistor</dt><dd>Infineon BFR840L3RHESD</dd></div>
-          <div><dt>Board</dt><dd>FR4, 0.8 mm, grounded coplanar waveguide feed lines</dd></div>
-          <div><dt>Tools</dt><dd>Keysight ADS for circuit and EM simulation, KiCad for layout</dd></div>
-          <div><dt>Result</dt><dd>Gain above 12 dB over 700 MHz, IP1dB of −15 dBm</dd></div>
+          <div><dt>Transistor</dt><dd>Infineon BFR840L3RHESD SiGe:C HBT, f<sub>T</sub> ≈ 70 GHz</dd></div>
+          <div><dt>Substrate</dt><dd>0.8 mm FR4 (ε<sub>r</sub> ≈ 4.5), grounded coplanar waveguide</dd></div>
+          <div><dt>Tools</dt><dd>Keysight ADS for circuit and EM co-simulation, KiCad for layout</dd></div>
+          <div><dt>Result</dt><dd>S21 above 12 dB over 700 MHz, IP1dB of −15 dBm</dd></div>
         </dl>
       </div>
 
       <figure class="portrait">
         <img src="../assets/lna-board-photo.jpg" alt="Assembled red LNA circuit board with an SMA connector on each side and two bias terminals at the bottom">
-        <figcaption>Fig. 1: The assembled amplifier board with SMA connectors for input and output</figcaption>
+        <figcaption>Fig. 1: The assembled amplifier with SMA input and output and separate base and collector supplies</figcaption>
       </figure>
     </section>
 
-    <!-- ===== Overview and requirements ===== -->
+    <!-- ===== Specification ===== -->
     <section id="overview">
-      <h2>Goal and requirements</h2>
+      <h2>Specification and results</h2>
       <p>
-        The task was to design and build an amplifier that boosts weak signals around 2.45 GHz
-        while adding as little noise as possible, then check the real board against the simulation.
-        The design followed a fixed order: bias, stabilization, matching, layout, simulation,
-        fabrication and measurement.
+        The brief was a 2.4 to 2.5 GHz LNA built around a given transistor, designed through bias,
+        stabilization, matching, layout and EM simulation, then fabricated and measured against the
+        specification.
       </p>
       <table>
         <thead>
-          <tr><th>Requirement</th><td>Target</td><td>Result</td></tr>
+          <tr><th>Parameter</th><td>Target</td><td>Achieved</td></tr>
         </thead>
         <tbody>
-          <tr><th scope="row">Gain</th><td>&gt; 10 dB</td><td>&gt; 12 dB over 700 MHz (measured)</td></tr>
-          <tr><th scope="row">Reflection</th><td>&lt; −10 dB</td><td>S11 below −10 dB over 500 MHz, S22 over 600 MHz (measured)</td></tr>
+          <tr><th scope="row">Gain S21</th><td>&gt; 10 dB</td><td>&gt; 12 dB over 700 MHz (measured)</td></tr>
+          <tr><th scope="row">Match S11, S22</th><td>&lt; −10 dB</td><td>&lt; −10 dB over 500 MHz at the input and 600 MHz at the output (measured)</td></tr>
           <tr><th scope="row">Noise figure</th><td>&lt; 2 dB</td><td>About 1.3 dB at 2.45 GHz (simulated)</td></tr>
-          <tr><th scope="row">Compression</th><td>&gt; −20 dBm</td><td>IP1dB of −15 dBm (measured)</td></tr>
+          <tr><th scope="row">IP1dB</th><td>&gt; −20 dBm</td><td>−15 dBm (measured)</td></tr>
         </tbody>
       </table>
     </section>
@@ -76,60 +75,60 @@
       <ol class="steps">
         <li>
           <div>
-            <h3>Choose the bias point</h3>
-            <p>Sweeping the base voltage showed the lowest minimum noise figure, 0.75 dB, at about 0.8 V. The collector voltage hardly changed noise or gain between 1.2 V and 3.6 V, so I set the base to 0.8 V and the collector to 1.8 V.</p>
+            <h3>Bias point</h3>
+            <p>A base-voltage sweep placed the noise optimum, NF<sub>min</sub> = 0.75 dB, at V<sub>B</sub> ≈ 0.8 V. Varying V<sub>CE</sub> between 1.2 V and 3.6 V barely moved NF<sub>min</sub> or the maximum available gain, so I set V<sub>CE</sub> to 1.8 V.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Stabilize the transistor</h3>
-            <p>The transistor is fast (transition frequency of 70 GHz), so I checked stability over a very wide range. The bare device was potentially unstable from 33 MHz to 9 GHz. A resistive network on the collector, a 27 Ω resistor behind a capacitor, raised the stability factor K above 1.</p>
+            <h3>Stabilization</h3>
+            <p>With f<sub>T</sub> around 70 GHz, the bare device was potentially unstable (K &lt; 1) from 33 MHz to 9 GHz, so I analyzed stability far beyond the operating band. A series RC of 27 Ω and 220 pF from collector to ground brought K above 1 across the whole range.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Match input and output</h3>
-            <p>Noise and gain want different source impedances, so the input match is a compromise: a minimum noise figure of 1.2 dB with a maximum available gain of 16.5 dB. The bias feeds join the matching networks, and each supply rail uses four capacitors in parallel (2.2 pF to 2.2 µF) to form an RF ground over a wide frequency range.</p>
+            <h3>Noise and gain matching</h3>
+            <p>With the stabilization network in place, the device offers NF<sub>min</sub> = 1.2 dB and 16.5 dB maximum available gain at 2.45 GHz. Since Γ<sub>opt</sub> and the conjugate match do not coincide, I placed the input termination as a compromise using noise and gain circles. The bias feeds are merged into the matching networks, and each supply is decoupled by four parallel capacitors from 2.2 pF to 2.2 µF for a low-impedance RF ground over a wide band.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Lay out and simulate electromagnetically</h3>
-            <p>I drew the board in KiCad and imported it into ADS, so the transmission lines, pads and vias were simulated electromagnetically and combined with the transistor and capacitor models in one co-simulation.</p>
+            <h3>Layout and EM co-simulation</h3>
+            <p>I laid out the board in KiCad with grounded coplanar waveguide lines and via fences, then imported it into ADS. There, the EM-simulated interconnects were co-simulated with the vendor models of the transistor and the Murata capacitors.</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Fabricate and measure</h3>
-            <p>The board was manufactured, assembled and measured for S-parameters and for gain versus input power.</p>
+            <h3>Fabrication and measurement</h3>
+            <p>After assembly I measured the small-signal S-parameters and a power sweep of S21 and compared both with the co-simulation.</p>
           </div>
         </li>
       </ol>
 
       <figure>
         <img src="../assets/lna-bias.png" alt="Minimum noise figure and maximum available gain against base voltage for collector voltages from 1.2 to 3.6 volts">
-        <figcaption>Fig. 2: Minimum noise figure and maximum gain against base voltage for several collector voltages. The shaded band marks the low-noise region</figcaption>
+        <figcaption>Fig. 2: NF<sub>min</sub> and maximum available gain against base voltage for V<sub>CE</sub> from 1.2 V to 3.6 V. The shaded band marks the low-noise region</figcaption>
       </figure>
 
       <div class="figure-row">
         <figure>
           <img src="../assets/lna-stability.png" alt="Stability factor K against frequency before and after adding the stabilization network">
-          <figcaption>Fig. 3a: Stability factor before and after stabilization</figcaption>
+          <figcaption>Fig. 3a: Stability factor K before and after stabilization</figcaption>
         </figure>
         <figure>
           <img src="../assets/lna-matching.png" alt="Smith chart showing noise circles and gain circles for the input match">
-          <figcaption>Fig. 3b: Noise and gain circles used to pick the input match</figcaption>
+          <figcaption>Fig. 3b: Noise and gain circles for choosing the input termination</figcaption>
         </figure>
       </div>
 
       <figure>
         <img src="../assets/lna-schematic.png" alt="ADS schematic of the amplifier with input and output networks, the transistor, bias feeds and decoupling capacitors">
-        <figcaption>Fig. 4: Amplifier schematic in ADS, including the bias feeds and decoupling capacitors</figcaption>
+        <figcaption>Fig. 4: ADS schematic with matching networks, bias feeds and supply decoupling</figcaption>
       </figure>
 
       <figure>
-        <img src="../assets/lna-layout.png" alt="3D render of the PCB layout with coplanar lines, SMA connectors and bias terminals">
-        <figcaption>Fig. 5: KiCad layout with grounded coplanar waveguide lines, SMA connectors and the two bias terminals (VB and VCC)</figcaption>
+        <img src="../assets/lna-layout.png" alt="3D render of the PCB layout with coplanar lines, via fences, SMA connectors and bias terminals">
+        <figcaption>Fig. 5: KiCad layout with grounded coplanar waveguide, via fences and separate base (VB) and collector (VCC) supplies</figcaption>
       </figure>
     </section>
 
@@ -137,59 +136,59 @@
     <section id="measurement">
       <h2>Measurement</h2>
       <p>
-        The measured S-parameters follow the co-simulation closely. The reflection dip and the gain peak
-        sit slightly lower in frequency than predicted, and the measured gain is a few tenths of a decibel
-        below the simulation. The dashed curves show the simulation and the solid curves the measurement.
+        Measurement and co-simulation agree closely. The input and output matches are centered slightly below
+        the design frequency, and the measured gain sits about 0.4 dB under the prediction while staying above
+        12 dB across 700 MHz. In the plots, dashed curves are simulation and solid curves are measurement.
       </p>
       <div class="figure-row">
         <figure>
           <img src="../assets/lna-s11.png" alt="Measured and simulated input and output reflection coefficients against frequency, both dipping below −20 dB near 2.4 GHz">
-          <figcaption>Fig. 6a: Input and output reflection, simulation against measurement</figcaption>
+          <figcaption>Fig. 6a: S11 and S22, simulation and measurement</figcaption>
         </figure>
         <figure>
-          <img src="../assets/lna-s21.png" alt="Measured and simulated gain against frequency, peaking above 13 dB">
-          <figcaption>Fig. 6b: Gain, simulation against measurement</figcaption>
+          <img src="../assets/lna-s21.png" alt="Measured and simulated gain against frequency, peaking near 14 dB">
+          <figcaption>Fig. 6b: S21, simulation and measurement</figcaption>
         </figure>
       </div>
 
       <p>
-        A power sweep shows the same trend as the simulation. Gain starts to compress as the input power
-        rises, and the 1 dB compression point lies at an input power of −15 dBm, above the −20 dBm target.
+        In the power sweep, gain compresses in the same way as the simulation predicts, only slightly earlier.
+        The input-referred 1 dB compression point is −15 dBm, 5 dB above the specification.
       </p>
       <figure>
-        <img src="../assets/lna-power.png" alt="Gain against input power, measured and simulated, falling off above −20 dBm">
-        <figcaption>Fig. 7: Gain against input power, simulation against measurement</figcaption>
+        <img src="../assets/lna-power.png" alt="Gain against input power, measured and simulated, compressing above −20 dBm">
+        <figcaption>Fig. 7: Gain against input power, simulation and measurement</figcaption>
       </figure>
     </section>
 
     <!-- ===== Open question ===== -->
     <section id="open-question">
-      <h2>An open question: spurious tones</h2>
+      <h2>Open issue: spurious tones</h2>
       <p>
-        The measurements also showed spurious tones at 1.1 GHz and 1.35 GHz, and the DC collector current
-        jumped as the input power changed. To test whether the amplifier was oscillating, I rechecked stability in
-        simulation and in the measured S-parameters. The minimum K factor was 1.15 at 13.5 GHz, and the
-        stability measures μ and μ′ stayed above 1, so neither showed an instability at those frequencies.
+        The output spectrum also showed spurs at 1.1 GHz and 1.35 GHz, together with steps in the DC collector
+        current as the input power changed. Both are typical signs of oscillation. Yet neither the simulation
+        nor the measured S-parameters indicate instability: K stays at or above 1.15, with its minimum at
+        13.5 GHz, and μ and μ′ remain above 1 throughout.
       </p>
       <p>
-        I also refined the mesh and widened the frequency plan of the electromagnetic simulation, but it
-        did not explain the tones. Their cause is still open. The amplifier meets its specification, and
-        this part of the project showed me where a simulation and a real board can still disagree.
+        Refining the EM mesh and extending the simulated frequency range did not reproduce the tones, so
+        their root cause is still open. The amplifier meets its specification, and the spurs are a reminder
+        that small-signal stability criteria do not capture every way a real board can misbehave.
       </p>
       <figure>
         <img src="../assets/lna-spurs.png" alt="Measured spectrum with spurious tones near 1.1 and 1.35 gigahertz">
-        <figcaption>Fig. 8: Measured spectrum with spurious tones at 1.1 GHz and 1.35 GHz</figcaption>
+        <figcaption>Fig. 8: Output spectrum with spurs at 1.1 GHz and 1.35 GHz</figcaption>
       </figure>
     </section>
 
     <!-- ===== Takeaways ===== -->
     <section id="takeaways">
-      <h2>What I took away</h2>
+      <h2>Takeaways</h2>
       <ul>
-        <li>The full RF design loop on one board: bias, stability, matching, layout, simulation and measurement.</li>
-        <li>Low noise and high gain compete at the input match, so the match is always a compromise.</li>
-        <li>Electromagnetic simulation of the real layout catches effects that an ideal schematic hides.</li>
-        <li>Passing every simulated stability check does not guarantee clean behavior on the bench, so measurement is the real test.</li>
+        <li>The complete RF design cycle on one board: bias, stability, noise and gain matching, layout, EM co-simulation and measurement.</li>
+        <li>The input network is a deliberate compromise between noise figure and gain.</li>
+        <li>Co-simulating the EM-extracted layout with vendor models brought simulation and measurement within about half a decibel.</li>
+        <li>Small-signal stability criteria are necessary but not sufficient. The bench has the final word.</li>
       </ul>
       <p><a class="back" href="../index.html#projects">Back to projects</a></p>
     </section>
