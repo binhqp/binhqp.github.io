@@ -39,6 +39,7 @@
           <div><dt>Context</dt><dd>Lab course Semiconductor Technology, Institute of Functional Nanosystems, Ulm University</dd></div>
           <div><dt>Year</dt><dd>2022</dd></div>
           <div><dt>Device</dt><dd>Corbino MESFET on GaAs, four device sizes</dd></div>
+          <div><dt>Facility</dt><dd>Ulm University clean room, ISO 4 working area</dd></div>
           <div><dt>Process</dt><dd>E-beam evaporation, photolithography, wet etching, lift-off, annealing</dd></div>
           <div><dt>Measurement</dt><dd>Wafer probe station, Keithley SMU, curve fitting in Python</dd></div>
         </dl>
@@ -62,6 +63,28 @@
       <p>
         The goal was a working device on each participant’s quarter of a 2-inch GaAs wafer, plus a
         measurement report: diode and transistor characteristics, and a fit of the diode parameters.
+      </p>
+      <p>
+        The wafers arrived with the channel already grown by molecular beam epitaxy: a 50 nm
+        silicon-doped n-type GaAs layer (about 10<sup>17</sup> cm<sup>−3</sup>), thin enough that the
+        channel pinches off at a moderate gate voltage. The devices are depletion-mode transistors,
+        which conduct at zero gate voltage and are switched off by a negative one.
+      </p>
+    </section>
+
+    <!-- ===== Setting and safety ===== -->
+    <section id="setting">
+      <h2>Setting and safety</h2>
+      <p>
+        The course took place in the Ulm University clean room, built in the early 1990s and opened in 1993.
+        Its working area is kept at ISO 4 air cleanliness with a constant downward airflow, and the
+        lithography room uses yellow light so the photoresist is not exposed. Everyone worked in
+        overalls, hair covers and gloves, always with a supervisor present.
+      </p>
+      <p>
+        Gallium arsenide is classed as a carcinogen, so pieces and dust stayed on the work surface or in
+        closed containers and went into dedicated waste. Acids and solvents were handled on ventilated
+        wet benches with a face shield and gloves, and every beaker was labelled with its contents.
       </p>
     </section>
 
@@ -109,7 +132,7 @@
         <li>
           <div>
             <h3>Anneal</h3>
-            <p>Heat to 400 °C in nitrogen (one hour up, two hours hold, one hour down). At this temperature germanium sits on arsenic sites and acts as a donor, which improves the source and drain contacts.</p>
+            <p>Heat to 400 °C in nitrogen (one hour up, two hours hold, one hour down). At this temperature germanium sits on arsenic sites and acts as a donor, which improves the source and drain contacts. Arsenic starts to gas out of GaAs at around 350 °C, which is why this step runs in a closed, ventilated setup.</p>
           </div>
         </li>
       </ol>
@@ -206,6 +229,7 @@
         <li>A small deviation in one step can cost a whole batch of devices, so timing and process control matter more than any single clever step.</li>
         <li>Hands-on experience with clean-room processing: wet etching, spin-coating, contact lithography, evaporation, lift-off and annealing.</li>
         <li>Characterizing devices end to end, from probing to fitting a physical model in Python and tying a failure back to the physical cause.</li>
+        <li>Working safely with hazardous materials such as GaAs, acids and solvents under strict clean-room rules.</li>
       </ul>
       <p><a class="back" href="../index.html#projects">Back to projects</a></p>
     </section>
