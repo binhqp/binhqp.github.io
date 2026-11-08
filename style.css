@@ -142,3 +142,29 @@ th { width: 6.5rem; font-weight: 500; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* ===== Case-study pages (projects/*.html) ===== */
+
+/* Small "back" link above the page title */
+.back { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); text-decoration: none; }
+.back:hover { color: var(--ink); }
+
+/* Figures inside the text: image on top, caption below */
+main figure { margin: 1.5rem 0; }
+main figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: #fff; }
+.hero .portrait img { border: 0; }
+
+/* Two figures side by side; they stack on narrow screens */
+.figure-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
+.figure-row figure { margin: 0; }
+
+/* Process steps: numbering is correct here because the content really is a sequence */
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 1.5rem 0; max-width: 46rem; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 2.5rem 1fr; gap: 0 1rem; padding: 1rem 0; border-top: 1px solid var(--rule); }
+.steps li::before { content: counter(step); font-family: var(--serif); font-size: 1.5rem; line-height: 1.2; color: var(--accent); }
+.steps h3 { font-size: 1.05rem; margin-bottom: .25rem; }
+.steps p { margin: 0; }
+
+/* Case-study sections have a little less vertical padding than the home page */
+.case section { padding: 3rem 0; }
+.case h2 { margin-bottom: 1rem; }
